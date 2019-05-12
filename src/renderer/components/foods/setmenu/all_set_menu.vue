@@ -1,56 +1,23 @@
 <template>
     <div class="hero-body">
         <div class="container">
-            <h2 class="subtitle" v-if="from_dt==undefined">
-                Sales Report
+            <h2 class="subtitle">
+                All Set Menu
             </h2>
             <section>
-                <div v-if="from_dt==undefined" class="columns">
+                <div class="columns">
                     <div class="column">
-                        <b-field label="from date">
-                            <b-datepicker
-                                    :date-parser="date_format"
-                                    v-model="from_date"
-                                    placeholder="Type or select a date..."
-                                    icon="calendar-today"
-                                    editable>
-                            </b-datepicker>
-                        </b-field>
+                        <router-link class="button is-primary" :to="{name:'new_set_menu'}">Add New</router-link>
                     </div>
                     <div class="column">
-                        <b-field label="to date">
-                            <b-datepicker
-                                    v-model="to_date"
-                                    placeholder="Type or select a date..."
-                                    icon="calendar-today"
-                                    editable>
-                            </b-datepicker>
-                        </b-field>
+
                     </div>
                     <div class="column">
-                        <b-field label="Search">
-                            <b-button @click="search_data" type="is-primary">Search</b-button>
-                        </b-field>
+
                     </div>
                     <div class="column">
                         <b-field label="Search">
                             <b-input  v-model="search_text" v-on:input="search_data"></b-input>
-                        </b-field>
-                    </div>
-                </div>
-                <div  class="columns">
-                    <div class="column">
-
-                    </div>
-                    <div class="column">
-
-                    </div>
-                    <div class="column">
-
-                    </div>
-                    <div class="column">
-                        <b-field label="Grand Total">
-                            <b-input disabled  v-model="current_total" ></b-input>
                         </b-field>
                     </div>
                 </div>
@@ -81,23 +48,17 @@
                             {{ props.row.id }}
                         </b-table-column>
 
-                        <b-table-column field="date_time" label="date"  sortable>
-                            {{ props.row.date_time }}
+                        <b-table-column field="category_name" label="Name"  sortable>
+                            {{ props.row.name }}
                         </b-table-column>
 
-                        <b-table-column field="net_total" label="total"  sortable>
-                            {{ props.row.net_total }}
+                        <b-table-column field="price" label="Price" >
+                            {{ props.row.price }}<span style="padding: 2px">৳</span>
+                        </b-table-column>
+                        <b-table-column field="discount" label="Discount Given" >
+                            {{ props.row.discount }}%
                         </b-table-column>
 
-                        <b-table-column field="cash" label="paid"  sortable>
-                            {{ props.row.cash }}
-                        </b-table-column>
-
-                        <b-table-column field="id" label="View" >
-
-                            <router-link :to="{name:'pos_inv',params:{id:props.row.id,view:true}}" class="button is-warning">View</router-link>
-
-                        </b-table-column>
                         <b-table-column field="id" label="Delete" >
 
                             <b-button v-on:click="s_delete(props.row.id)" type="is-danger">Delete</b-button>
@@ -115,19 +76,10 @@
 
     import BButton from "buefy/src/components/button/Button";
     export default {
-        props: {
-            from_dt:{
-                required: false
-            }
-        },
-        name:"sale_report",
+        name:"all_category",
         components: {BButton},
         data() {
-            const today = new Date();
             return {
-                //current_ttl:0,
-                from_date:this.from_dt!=undefined?this.from_dt:new Date(today.getTime() - (24*60*60*1000)*7),
-                to_date:today,
                 search_text:"",
                 data: [],
                 total: 0,
@@ -139,24 +91,8 @@
                 perPage: 10
             }
         },
-        computed: {
-            current_total () {
-                var ttl=0;
-                for(var i=0;i<this.data.length;i++){
-                    ttl+= parseFloat(this.data[i].net_total)
-                }
-
-                return ttl.toFixed(2);
-            }
-        },
         methods: {
-            date_format(date){
-                console.log(date)
-                console.log(new Date(Date.parse(date)))
-
-            },
             search_data(){
-                console.log(this.from_date)
                 this.loadAsyncData();
             },
             /*
@@ -164,11 +100,9 @@
              */
             loadAsyncData() {
                 this.loading = true;
-                this.$db('sales')
-                    .orWhere('id', 'like', '%'+this.search_text+'%')
+                this.$db('set_menu')
+                    .orWhere('name', 'like', '%'+this.search_text+'%')
                     .where('sts', 1)
-                    .where('date_time', '>=',this.from_date)
-                    .where('date_time', '<=',this.to_date)
                     .orderBy('id', 'desc')
                     .limit(500)
                     .then(data => {
@@ -179,19 +113,17 @@
                         }
                         this.total = currentTotal;
                         data.forEach((item) => {
-                            var date=new Date(item.date_time).toLocaleDateString()
-                            item.date_time=date;
                             this.data.push(item)
                         })
                         this.loading = false
                     })
                     .catch((error) => {
-                        console.log(error)
                         this.data = []
                         this.total = 0
                         this.loading = false
                         throw error
                     })
+
 
             },
             /*
@@ -231,7 +163,7 @@
                     type: 'is-danger',
                     hasIcon: true,
                     onConfirm: () => {
-                        this.$db('sales')
+                        this.$db('set_menu')
                             .where({ id: id })
                             .update({sts:0})
                             .then(res=>{

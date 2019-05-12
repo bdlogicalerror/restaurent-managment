@@ -38,6 +38,22 @@
                         </b-field>
                     </div>
                 </div>
+                <div  class="columns">
+                    <div class="column">
+
+                    </div>
+                    <div class="column">
+
+                    </div>
+                    <div class="column">
+
+                    </div>
+                    <div class="column">
+                        <b-field label="Grand Total">
+                            <b-input disabled  v-model="current_total" ></b-input>
+                        </b-field>
+                    </div>
+                </div>
                 <b-table
                         :data="data"
                         :loading="loading"
@@ -115,6 +131,16 @@
                 defaultSortOrder: 'desc',
                 page: 1,
                 perPage: 10
+            }
+        },
+        computed: {
+            current_total () {
+                var ttl=0;
+                for(var i=0;i<this.data.length;i++){
+                    ttl+= parseFloat(this.data[i].total)
+                }
+
+                return ttl.toFixed(2);
             }
         },
         methods: {

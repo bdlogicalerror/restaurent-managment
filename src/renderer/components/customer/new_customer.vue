@@ -36,8 +36,14 @@
     export default {
         name: "new_customer",
         components:{BButton},
+        props: {
+            me_as_child:{
+
+            }
+        },
         data(){
             return{
+                child:this.me_as_child,
                 edit:false,
                 cus_id:null,
                 customer:{
@@ -76,14 +82,14 @@
                     this.$db('customers')
                         .insert(this.customer)
                         .then(res=>{
-                            console.log(res[0])
+                            //console.log(res[0])
                             this.$toast.open({
                                 message: 'Successfully Add customer!',
                                 type: 'is-success'
                             });
                             this.customer.customer_name="";
-                            if(this.$parent.newCustomer==true){
-                                this.$parent.newCustomer=false
+                            if(this.child){
+                                this.$emit('customer_added');
                             }
                             //this.$router.push({name:'all_customer'})
                         })

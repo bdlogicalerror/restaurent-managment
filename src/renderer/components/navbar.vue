@@ -66,24 +66,8 @@
                         <router-link class="navbar-item" :to="{name:'food_category'}">
                             Food Category
                         </router-link>
-                        <a class="navbar-item" href="#">
+                        <router-link class="navbar-item" :to="{name:'all_set_menu'}">
                             Set Menu
-                        </a>
-
-                    </div>
-                </div>
-
-                <!--Report Menu-->
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link" href="#">
-                        Reports
-                    </a>
-                    <div class="navbar-dropdown is-boxed">
-                        <router-link class="navbar-item" :to="{name:'sale_report'}">
-                            Sale Report
-                        </router-link>
-                        <router-link class="navbar-item" :to="{name:'purchase_report'}">
-                            Purchase Report
                         </router-link>
 
                     </div>
@@ -101,6 +85,25 @@
                         <router-link class="navbar-item" :to="{name:'all_expense'}">
                             Expense Report
                         </router-link>
+
+                    </div>
+                </div>
+
+                <!--Report Menu-->
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link" href="#">
+                        Reports
+                    </a>
+                    <div class="navbar-dropdown is-boxed">
+                        <router-link class="navbar-item" :to="{name:'sale_report'}">
+                            Sale Report
+                        </router-link>
+                        <router-link class="navbar-item" :to="{name:'purchase_report'}">
+                            Purchase Report
+                        </router-link>
+                        <!--<router-link class="navbar-item" :to="{name:'purchase_report'}">
+                            Details Transaction Report
+                        </router-link>-->
 
                     </div>
                 </div>

@@ -86,10 +86,10 @@
             }
         },
         methods: {
-            add_food() {
+           add_food() {
                 if (this.edit) {
-                    if(this.file!==null){
-                        var img=this.$MyImage.save_image(this.file.path,2,this.file.type);
+                    if(this.file.path!==undefined){
+                        var img=this.$MyImage.save_image(this.file.path,this.food_id,this.file.type);
                         this.food.pic=img;
                     }
                     this.$db('foods')
@@ -106,16 +106,26 @@
                             this.$MyLogger.write_log(error)
                         })
                 } else {
-                    if(this.file!==null){
-                        var img=this.$MyImage.save_image(this.file.path,2,this.file.type);
-                        this.food.pic=img;
-                    }
+                    var img;
+                    this.$db('foods')
+                        .where({sts: '1'})
+                        .orderBy('id','DESC')
+                        .then(rows=>{
+
+                            var sl=rows[0]['id']==undefined?1:rows[0]['id']+1;
+                            if(this.file.path!==undefined){
+                                img=this.$MyImage.save_image(this.file.path,sl,this.file.type);
+                                this.food.pic=img;
+                            }
+                        })
 
 
                     //console.log(img)
                     this.$db('foods')
                         .insert(this.food)
                         .then(res => {
+
+
                             this.$toast.open({
                                 message: 'Successfully Add!',
                                 type: 'is-success'

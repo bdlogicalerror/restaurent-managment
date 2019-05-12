@@ -83,6 +83,7 @@
                 table.increments('id');
                 table.string('name');
                 table.string('price');
+                table.string('discount');
                 table.string('pic');
                 table.string('sts').defaultTo(1);
 
@@ -98,6 +99,7 @@
             this.$db.schema.createTable('set_menu_details', (table) => {
                 table.increments('id');
                 table.string('set_menu_id');
+                table.string('qty');
                 table.string('food_id');
                 table.string('sts').defaultTo(1);
 

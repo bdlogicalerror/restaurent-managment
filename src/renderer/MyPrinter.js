@@ -7,8 +7,8 @@ export default class MyPrinter {
         this.temp_path=os.tmpdir();
         this.PrintOptions={
             pageSize:"A4",
-            marginsType: 0,
-            printBackground: false,
+            marginsType: 1,
+            printBackground: true,
             printSelectionOnly: false,
             landscape: false
         }

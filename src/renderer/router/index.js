@@ -52,6 +52,16 @@ export default new Router({
       path:"/food_menu",
       component:require('@/components/foods/food_menu/all_food').default
     },
+    {
+      name:"new_set_menu",
+      path:"/new_set_menu",
+      component:require('@/components/foods/setmenu/add_setmenu').default
+    },
+    {
+      name:"all_set_menu",
+      path:"/all_set_menu",
+      component:require('@/components/foods/setmenu/all_set_menu').default
+    },
 
       /*Expense route*/
     {

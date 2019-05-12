@@ -23,10 +23,10 @@
 
 <script>
     export default {
-        name: "cat_foods",
+        name: "set_menu",
         props: {
             category_id:{
-                required: true
+                //required: true
             }
         },
         data() {
@@ -39,13 +39,10 @@
         methods: {
             loadAsyncData() {
                 this.$db
-                    .select(['foods.id','foods.cat_id','foods.name','foods.sts','foods.unit','foods.price','foods.pic','food_category.category_name'])
-                    .from('foods')
+                    .from('set_menu')
                     .orWhere('name', 'like', '%'+this.search_text+'%')
-                    .join('food_category', 'foods.cat_id', '=', 'food_category.id')
-                    .where('foods.sts',1)
-                    .where('foods.cat_id',this.g_cat_id)
-                    .orderBy('foods.id', 'desc')
+                    .where('sts',1)
+                    .orderBy('id', 'desc')
                     .limit(500)
                     .then(data => {
                         this.data = []
@@ -77,7 +74,9 @@
             add_cart(food){
                 var get_food=food;
                 get_food.qty=1;
-                this.$emit('update_cart',get_food);
+                get_food.type='set_menu';
+                get_food.menu_id=food.id;
+                this.$emit('update_cart_set_menu',get_food);
                 this.search_text="";
                 this.search_data();
                 //console.log(food)

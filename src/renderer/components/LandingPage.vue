@@ -11,19 +11,19 @@
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading">Sale</p>
-                  <p class="title">3,456</p>
+                  <p class="title">{{today_report.sale}}<span style="padding: 2px;font-weight: bold">৳</span></p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading">Purchase</p>
-                  <p class="title">123</p>
+                  <p class="title">{{today_report.purchases}}<span style="padding: 2px;font-weight: bold">৳</span></p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading">Expense</p>
-                  <p class="title">456K</p>
+                  <p class="title">{{today_report.expenses}}<span style="padding: 2px;font-weight: bold">৳</span></p>
                 </div>
               </div>
             </nav>
@@ -63,10 +63,18 @@
         DBpath : path.join(remote.app.getPath('userData'), '/data.db'),
         first_run:false,
         tests:null,
-        error:null
+        error:null,
+
+        today_report:{
+          sale:0,
+          purchases:0,
+          expenses:0,
+        }
       }
     },
     created(){
+      //localStorage.setItem('munna','khan')
+      console.log(localStorage.getItem('munna'))
       fs.access(this.filepath, fs.F_OK, (err) => {
                 if (err) {
 
@@ -87,6 +95,9 @@
                   this.first_run=true;
                 }});
 
+      this.todays_sale();
+      this.todays_expenses();
+      this.todays_purchase();
 
     },
     methods: {
@@ -98,7 +109,6 @@
           this.$db('test')
           .then(rows =>{
             this.tests=rows;
-            console.log(rows)
           })
         }).catch((error)=>{
           console.log(error)
@@ -106,7 +116,50 @@
         });
         this.error=remote.app.getPath('userData');
         //this.$electron.shell.openExternal(link)
+      },
+      todays_sale(){
+        this.$db('sales')
+                .where('sts', 1)
+                .where('date_time', '>=',this.from_date)
+                .where('date_time', '<=',new Date())
+                .sum({sale:'net_total'})
+                .then(data => {
+                  this.today_report.sale=data[0].sale;
+                })
+                .catch((error) => {
+                  console.log(error)
+                  throw error
+                })
+      },
+      todays_purchase(){
+        this.$db('purchases')
+                .where('sts', 1)
+                .where('date_time', '>=',this.from_date)
+                .where('date_time', '<=',new Date())
+                .sum({purchases:'total'})
+                .then(data => {
+                  this.today_report.purchases=data[0].purchases;
+                })
+                .catch((error) => {
+                  console.log(error)
+                  throw error
+                })
+      },
+      todays_expenses(){
+        this.$db('expenses')
+                .where('sts', 1)
+                .where('date_time', '>=',this.from_date)
+                .where('date_time', '<=',new Date())
+                .sum({expenses:'total'})
+                .then(data => {
+                  this.today_report.expenses=data[0].expenses;
+                })
+                .catch((error) => {
+                  console.log(error)
+                  throw error
+                })
       }
+
     }
   }
 </script>

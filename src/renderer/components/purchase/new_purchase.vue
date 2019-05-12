@@ -164,8 +164,8 @@
                     ttl+= parseFloat(this.food_data[i].p_total);
                 }
                 var m_ttl= ttl-(ttl*this.purchase.discount)/100;
-                this.purchase.total=m_ttl;
-                return m_ttl;
+                this.purchase.total=m_ttl.toFixed(2);
+                return m_ttl.toFixed(2);
             },
             filteredDataObj() {
                 return this.data.filter((option) => {
