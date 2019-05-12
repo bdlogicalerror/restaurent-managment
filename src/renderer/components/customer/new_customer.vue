@@ -1,0 +1,107 @@
+<template>
+    <section  class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <h2 class="subtitle">
+                    Add Customer
+                </h2>
+                <section>
+                    <form @submit.prevent="add_customer">
+                        <b-field label="Name">
+                            <b-input required v-model="customer.name"></b-input>
+                        </b-field>
+                        <b-field label="mobile">
+                            <b-input  v-model="customer.mobile"></b-input>
+                        </b-field>
+                        <!--<b-field label="Birth Date">
+                            <b-datepicker v-model="customer.birth_date"
+                                    placeholder="Click to select..."
+                                    icon="calendar-today">
+                            </b-datepicker>
+                        </b-field>-->
+                        <b-field label="Address">
+                            <b-input v-model="customer.address" maxlength="200" type="textarea"></b-input>
+                        </b-field>
+                        <input class="button is-link" type="submit" value="Save">
+                    </form>
+                </section>
+
+            </div>
+        </div>
+    </section>
+</template>
+
+<script>
+    import BButton from "buefy/src/components/button/Button";
+    export default {
+        name: "new_customer",
+        components:{BButton},
+        data(){
+            return{
+                edit:false,
+                cus_id:null,
+                customer:{
+
+                }
+            }
+        },
+        created(){
+            if(this.$route.params.id!==undefined){
+                this.cus_id=this.$route.params.id;
+                this.$db('customers')
+                    .where({id:this.cus_id})
+                    .then(rows=>{
+                        this.customer=rows[0];
+                    });
+                this.edit=true;
+            }
+        },
+        methods:{
+            add_customer(){
+                if(this.edit){
+                    this.$db('customers')
+                        .where({id:this.cus_id})
+                        .update(this.customer)
+                        .then(res=>{
+                            this.$router.push({name:"all_customer"})
+                            this.$toast.open({
+                                message: 'Successfully updated!',
+                                type: 'is-success'
+                            })
+                        })
+                        .catch(error => {
+                            this.$MyLogger.write_log(error)
+                        })
+                }else{
+                    this.$db('customers')
+                        .insert(this.customer)
+                        .then(res=>{
+                            console.log(res[0])
+                            this.$toast.open({
+                                message: 'Successfully Add customer!',
+                                type: 'is-success'
+                            });
+                            this.customer.customer_name="";
+                            if(this.$parent.newCustomer==true){
+                                this.$parent.newCustomer=false
+                            }
+                            //this.$router.push({name:'all_customer'})
+                        })
+                        .catch(err=>{
+                            this.$toast.open({
+                                duration: 5000,
+                                message: `Something's not good, Error to Add customer`,
+                                type: 'is-danger'
+                            });
+                            this.$MyLogger.write_log(err)
+                        })
+                }
+
+            },
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>
