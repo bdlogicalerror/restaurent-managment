@@ -110,8 +110,8 @@
 
             </div>
 
-            <div class="navbar-end">
-                <!--User Menu-->
+            <!--<div class="navbar-end">
+                &lt;!&ndash;User Menu&ndash;&gt;
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link" href="#">
                         User
@@ -120,13 +120,13 @@
                         <a class="navbar-item" href="#">
                             Edit Info
                         </a>
-                        <a class="navbar-item" href="#">
+                        <a class="navbar-item" @click="logout">
                             Logout
                         </a>
 
                     </div>
                 </div>
-                <!--about us-->
+                &lt;!&ndash;about us&ndash;&gt;-->
                 <router-link class="navbar-item" :to="{name:'about'}">
                     About
                 </router-link>
@@ -137,7 +137,21 @@
 
 <script>
     export default {
-        name: "navbar"
+        name: "navbar",
+        data(){
+          return{
+
+          }
+        },
+        methods:{
+            logout(){
+
+                localStorage.removeItem('login');
+                window.location.reload();
+                console.log('here')
+
+            }
+        }
     }
 </script>
 

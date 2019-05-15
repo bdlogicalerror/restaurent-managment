@@ -262,9 +262,9 @@
                     .where({sts: '1'})
                     .orderBy('id','DESC')
                     .then(rows=>{
-                        console.log(rows[0]['id'])
+                        console.log(rows)
                         if(this.sale.file.path!==undefined){
-                            if(rows[0]['id']==undefined){
+                            if(rows.length!==undefined){
                                 sl=1;
                             }else{
                                 sl=rows[0]['id']+1;
@@ -305,12 +305,10 @@
                                         };
                                         this.food_data=[];
 
-                                        this.$dialog.confirm({
-                                            message: 'Do you want to go home?',
-                                            onConfirm: () => {
-                                                this.$router.push({path:'/'})
-                                            }
-                                        })
+                                        this.$toast.open({
+                                            message: 'Successfully Add!',
+                                            type: 'is-success'
+                                        });
                                     })
                                     .catch(error => {
                                         console.log(error)

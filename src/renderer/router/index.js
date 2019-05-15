@@ -6,9 +6,19 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      path: '/license',
+      name: 'license',
+      component: require('@/components/license').default
+    },
+    {
       path: '/',
       name: 'landing-page',
       component: require('@/components/LandingPage').default
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: require('@/components/login').default
     },
     {
       path: '/install',

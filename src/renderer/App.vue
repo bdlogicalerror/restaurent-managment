@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavBar v-if="showNav"></NavBar>
+    <NavBar v-if="install"></NavBar>
     <router-view></router-view>
   </div>
 </template>
@@ -12,8 +12,13 @@
     components:{NavBar},
     data(){
       return{
+        install:true,
         showNav:true,
       }
+    },
+    created() {
+      this.$SystemControl.check_install();
+
     }
   }
 </script>

@@ -243,12 +243,10 @@
                                 };
                                 this.food_data=[];
 
-                                this.$dialog.confirm({
-                                    message: 'Do you want to leave this page?',
-                                    onConfirm: () => {
-                                        this.$router.push({path:'/'})
-                                    }
-                                })
+                                this.$toast.open({
+                                    message: 'Successfully Add!',
+                                    type: 'is-success'
+                                });
                             })
                             .catch(error => {
                                 console.log(error)

@@ -119,7 +119,7 @@
                                         <b-tab-item v-for="cat in categories" v-bind:key="cat.id" :label="cat.category_name">
                                             <cat_foods @update_cart="cart_update" :category_id="cat.id"></cat_foods>
                                         </b-tab-item>
-                                        <b-tab-item label="Set-Menu">
+                                        <b-tab-item  label="Set-Menu" v-bind:key="categories.length+1">
                                             <SetMenu @update_cart_set_menu="cart_update"></SetMenu>
                                         </b-tab-item>
 
@@ -194,7 +194,7 @@
                 },
                 activeTab: 0,
                 showBooks: false,
-                categories:null,
+                categories:[],
 
 
             }

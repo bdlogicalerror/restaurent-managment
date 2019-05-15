@@ -51,6 +51,7 @@
   var fs = require('fs');
   import path from 'path';
   import TodaySale from './report/sale_report'
+
   export default {
     name: 'landing-page',
     components: { TodaySale },
@@ -72,34 +73,43 @@
         }
       }
     },
-    created(){
-      //localStorage.setItem('munna','khan')
-      console.log(localStorage.getItem('munna'))
-      fs.access(this.filepath, fs.F_OK, (err) => {
-                if (err) {
-
-                  fs.unlink(this.DBpath, (err) => {
-                    if (err){
-                      this.$MyLogger.write_log(err);
-                      this.$MyLogger.write_log('unable to delete old DB');
-
-                    }else{
-                      this.$MyLogger.write_log('old DB was deleted');
-                    }
-
-                  });
-
-
-                  this.$MyLogger.write_log(err);
-                  this.$router.push({name:'install'});
-                  this.first_run=true;
-                }});
-
-      this.todays_sale();
-      this.todays_expenses();
-      this.todays_purchase();
-
+    mounted(){
+      if(!this.first_run){
+        this.todays_sale();
+        this.todays_expenses();
+        this.todays_purchase();
+      }
     },
+    created(){
+      console.log(this.$parent.$data);
+      this.$parent.$data.install=true;
+      /*fs.access(this.filepath, fs.F_OK, (err) => {
+        if (err) {
+
+          fs.unlink(this.DBpath, (err) => {
+            if (err){
+              this.$MyLogger.write_log(err);
+              this.$MyLogger.write_log('unable to delete old DB');
+
+            }else{
+              this.$MyLogger.write_log('old DB was deleted');
+            }
+
+          });
+          this.$MyLogger.write_log(err);
+          console.log(err);
+          this.$parent.showNav=false;
+          this.$router.push({name:'install'});
+          this.first_run=true;
+
+          this.$parent.$data.install=false;
+
+        }
+        this.$parent.$data.install=true;
+        this.$parent.showNav=true;
+        this.first_run=false;
+      });*/
+  },
     methods: {
       open () {
         this.$db("test").insert({

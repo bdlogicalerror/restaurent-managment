@@ -112,7 +112,7 @@
                         .orderBy('id','DESC')
                         .then(rows=>{
 
-                            var sl=rows[0]['id']==undefined?1:rows[0]['id']+1;
+                            var sl=rows.length==undefined?1:rows[0]['id']+1;
                             if(this.file.path!==undefined){
                                 img=this.$MyImage.save_image(this.file.path,sl,this.file.type);
                                 this.food.pic=img;

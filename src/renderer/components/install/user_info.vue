@@ -3,15 +3,16 @@
         <div class="hero-body">
             <div class="container">
                 <h2 class="subtitle">
-                    Setup User Information
+                    Setup New User Information Or <button @click="go_login" class="button is-success">Enter Serial</button>
                 </h2>
+
                 <section>
                     <form @submit.prevent="add_user_info">
                         <b-field label="Name">
                             <b-input required v-model="user.name"></b-input>
                         </b-field>
-                        <b-field label="Username">
-                            <b-input required v-model="user.username"></b-input>
+                        <b-field label="Mobile">
+                            <b-input v-model="user.mobile"></b-input>
                         </b-field>
                         <b-field label="Password">
                             <b-input required type="password"
@@ -19,13 +20,8 @@
                                      password-reveal>
                             </b-input>
                         </b-field>
-                        <b-field label="Mobile">
-                            <b-input v-model="user.mobile"></b-input>
-                        </b-field>
-                        <b-field label="Address">
-                            <b-input v-model="user.address" maxlength="200" type="textarea"></b-input>
-                        </b-field>
-                        <input class="button is-link" type="submit" value="Finish">
+
+                        <input class="button is-link" type="submit" value="Register">
                     </form>
 
                 </section>
@@ -49,75 +45,44 @@
                     username:"",
                     mobile:"",
                     name:"",
-                    address:"",
-                    password:""
+                    password:"",
+                    machine_id:this.$SystemControl.machine_id
                 }
             }
         },
         created(){
-            this.$db('users').then(rows=>{
-                this.$router.push({path:'/'});
-                console.log(rows)
-            }).catch(err=>{
-                //this.$MyLogger.write_log(err)
 
-                this.$db.schema.createTable('users', (table) => {
-                    table.increments('id');
-                    table.string('username');
-                    table.string('password');
-                    table.string('name');
-                    table.string('mobile');
-                    table.string('address');
-                })
-                    .then((res) => {
-                        console.log(res)
-                    })
-            })
 
         },
         methods:{
+            go_login(){
+              this.$parent.$data.register_sts=false;
+            },
             add_user_info(){
-                this.$db('users').insert(this.user)
-                    .then((res) => {
 
-                        var filepath = path.join(remote.app.getPath('userData'), '/install.mk')
-                        var content = "Installation complete";
 
-                        fs.writeFile(filepath, content, (err) => {
-                            if (err) {
-                                this.$MyLogger.write_log(err);
-                                this.$dialog.alert({
-                                    title: 'Error',
-                                    message: 'Something\'s not good but I have a custom <b>icon</b> and <b>type</b>',
-                                    type: 'is-danger',
-                                    hasIcon: true,
-                                    icon: 'times-circle',
-                                    iconPack: 'fa'
-                                });
+                this.$http.post(this.$RemoteServer+'register',this.user,{
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then((result) => {
 
-                                console.log(err);
-                                return;
-                            }
+                        if(result.data.sts){
+                            this.$emit('hide_register');
+                            this.$toast.open({
+                                message: 'Successfully Add User!',
+                                type: 'is-success'
+                            });
+                        }else {
 
-                            this.$dialog.alert({
-                                title: 'Success',
-                                message: 'Successfully installed, Please Re-Open App',
-                                type: 'is-success',
-                                hasIcon: true,
-                                icon: 'times-circle',
-                                iconPack: 'fa'
-                            })
-                        });
+                        }
 
-                        this.$parent.progress+=10;
-                        this.$parent.user_info=true;
-                        this.$router.push({path:'/'})
-                        this.$electron.app.quit();
                     })
-                    .catch(err=>{
+                    .catch((err) => {
                         console.log(err)
+                        this.$MyLogger.write_log(err)
                     });
-                //console.log(this.user)
             }
         }
     }
