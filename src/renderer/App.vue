@@ -18,7 +18,6 @@
     },
     created() {
       this.$SystemControl.check_install();
-
     }
   }
 </script>

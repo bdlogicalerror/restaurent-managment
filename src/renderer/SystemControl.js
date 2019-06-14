@@ -114,7 +114,7 @@ export default class SystemControl{
 
 
             if(day_diff>0){
-
+                return false;
             }else{
                 Toast.open({
                     duration: 5000,
@@ -122,10 +122,10 @@ export default class SystemControl{
                     position: 'is-top',
                     type: 'is-danger'
                 });
-                router.push({name:'license'})
+                router.push({name:'login'})
+
+                return true;
             }
         });
     }
-
-
 }

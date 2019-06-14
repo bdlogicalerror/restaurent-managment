@@ -36,7 +36,14 @@ Vue.config.productionTip = false
 
 
 
-
+router.beforeEach((to, from, next) => {
+  var exp=Vue.SystemControl.check_expiry();
+  if(exp){
+    next({name:"login"})
+  }else{
+    next();
+  }
+})
 
 new Vue({
   components: { App },

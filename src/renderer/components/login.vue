@@ -108,7 +108,7 @@
                 var decrypt=this.$SystemControl.decrypt_data(this.license);
                 if(decrypt){
                     var install=this.$SystemControl.make_install_file(this.license)
-                    console.log(install)
+                    //console.log(install)
                     this.$SystemControl.check_expiry()
                 }else{
 
