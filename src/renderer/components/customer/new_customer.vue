@@ -64,11 +64,15 @@
         },
         methods:{
             add_customer(){
+
+                this.$loading.open();
+
                 if(this.edit){
                     this.$db('customers')
                         .where({id:this.cus_id})
                         .update(this.customer)
                         .then(res=>{
+                            this.$loading.close();
                             this.$router.push({name:"all_customer"})
                             this.$toast.open({
                                 message: 'Successfully updated!',
@@ -76,6 +80,7 @@
                             })
                         })
                         .catch(error => {
+                            this.$loading.close();
                             this.$MyLogger.write_log(error)
                         })
                 }else{
@@ -83,6 +88,7 @@
                         .insert(this.customer)
                         .then(res=>{
                             //console.log(res[0])
+                            this.$loading.close();
                             this.$toast.open({
                                 message: 'Successfully Add customer!',
                                 type: 'is-success'
@@ -94,6 +100,7 @@
                             //this.$router.push({name:'all_customer'})
                         })
                         .catch(err=>{
+                            this.$loading.close();
                             this.$toast.open({
                                 duration: 5000,
                                 message: `Something's not good, Error to Add customer`,

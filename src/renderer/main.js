@@ -11,9 +11,6 @@ import MyImage from './image';
 import MyPrinter from './MyPrinter';
 import SysCtrl from './SystemControl';
 
-import { remote } from 'electron';
-var fs = require('fs');
-import path from 'path';
 
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
@@ -32,7 +29,8 @@ Vue.MyImage=Vue.prototype.$MyImage = new MyImage();
 Vue.MyLogger=Vue.prototype.$MyLogger = new MyLog();
 Vue.db=Vue.prototype.$db = db;
 Vue.http = Vue.prototype.$http = axios;
-Vue.config.productionTip = false
+
+Vue.config.productionTip = false;
 
 
 
