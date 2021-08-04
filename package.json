@@ -64,7 +64,7 @@
     "vuex": "^3.0.1",
     "vuex-electron": "^1.0.0",
     "fstream": "^1.0.12",
-    "tar": "^2.2.2"
+    "tar": "^4.4.15"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
