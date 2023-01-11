@@ -55,7 +55,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "buefy": "^0.7.5",
-    "knex": "^0.16.5",
+    "knex": "^2.4.0",
     "node-machine-id": "^1.1.10",
     "sqlite3": "^4.0.7",
     "vue": "^2.5.16",
